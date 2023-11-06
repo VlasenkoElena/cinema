@@ -11,7 +11,22 @@ import SwiftUI
 struct CinemaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppTabView()
+        }
+    }
+}
+
+struct AppTabView: View {
+    var body: some View {
+        TabView {
+            HomeView()
+                .tabItem {
+                    Label("Home", systemImage: "popcorn.fill")
+                }
+            UpcomingView()
+                .tabItem {
+                    Label("Upcoming", systemImage: "bolt")
+                }
         }
     }
 }

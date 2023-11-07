@@ -86,43 +86,44 @@ final class MovieDetailsViewModel: ObservableObject {
     init(movie: Movie, movieType: MovieType) {
         self.movie = movie
         self.movieType = movieType
-        configur()
+        Task {
+           await configure()
+        }
     }
     
-    func configur() {
+    func configure() async {
         switch movieType {
         case .movie:
-            fetchMovie()
+          await fetchMovie()
         case .series:
-            fetchSeriels()
+          await fetchSeriels()
         }
     }
     
-    func fetchMovie() {
+    @MainActor
+    func fetchMovie() async {
         state = .loading
-        networkManager.fetchMovie(movieId: movie.id) { [weak self] result in
-            switch result {
-            case .success(let movie):
-                self?.movie = movie
-                self?.state = .loaded
-            case .failure(let error):
-                self?.state = .error(error.localizedDescription)
-                print(error.localizedDescription)
-            }
+        let result = await networkManager.fetchMovie(movieId: movie.id)
+        switch result {
+        case .success(let movie):
+            self.movie = movie
+            self.state = .loaded
+        case .failure(let error):
+            self.state = .error(error.localizedDescription)
+            
         }
     }
     
-    func fetchSeriels() {
+    @MainActor
+    func fetchSeriels() async {
         state = .loading
-        networkManager.fetchSerielsDetails(serielsId: movie.id) { [weak self] result in
-            switch result {
-            case .success(let movie):
-                self?.movie = movie
-                self?.state = .loaded
-            case .failure(let error):
-                self?.state = .error(error.localizedDescription)
-                print(error)
-            }
+        let result = await networkManager.fetchSerielsDetails(serielsId: movie.id)
+        switch result {
+        case .success(let movie):
+            self.movie = movie
+            self.state = .loaded
+        case .failure(let error):
+            self.state = .error(error.localizedDescription)
         }
     }
     

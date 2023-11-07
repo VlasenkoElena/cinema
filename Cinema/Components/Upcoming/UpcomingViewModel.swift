@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class UpcomingViewModel: ObservableObject {
+@MainActor final class UpcomingViewModel: ObservableObject {
     
     private let networkManager = NetworkManager()
     var totalPages = 0
@@ -23,31 +23,32 @@ final class UpcomingViewModel: ObservableObject {
     
     
     init() {
-        fetch()
-    }
-    
-    func fetch() {
-        networkManager.fetchUpcoming(page: page) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let resultPopularMovies):
-                self.movies += resultPopularMovies.results
-                self.state = .loaded
-                self.page = resultPopularMovies.page
-                self.totalPages = resultPopularMovies.totalPages
-            case .failure(let error):
-                self.state = .error(error.localizedDescription)
-            }
+        Task {
+           await fetch()
         }
     }
     
-    func loadMoreContent(currentItem: Movie) {
+    func fetch() async {
+        let result = await networkManager.fetchUpcoming(page: page)
+        switch result {
+        case .success(let resultPopularMovies):
+            movies += resultPopularMovies.results
+            state = .loaded
+            page = resultPopularMovies.page
+            totalPages = resultPopularMovies.totalPages
+        case .failure(let error):
+            state = .error(error.localizedDescription)
+        }
+        
+    }
+    
+    func loadMoreContent(currentItem: Movie) async {
         if case .loading = state {
             return
         }
         if currentItem.id == movies.last?.id {
             page += 1
-            fetch()
+           await fetch()
         }
     }
 }

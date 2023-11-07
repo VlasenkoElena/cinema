@@ -104,20 +104,20 @@ class BaseNetworkManager {
         ]
     )
     
-    func request<T: Codable>(target: NetworkService, completionHandler: @escaping (Result<T, Error>) -> Void) {
-        provider.request(target) { result in
-            switch result {
-            case .success(let response):
-                DispatchQueue.main.async {
+    func request<T: Codable>(target: NetworkService) async -> Result<T, Error>  {
+        return await withCheckedContinuation { continuation in
+            provider.request(target) { result in
+                switch result {
+                case .success(let response):
                     do {
                         let result = try JSONDecoder().decode(T.self, from: response.data)
-                        completionHandler(.success(result))
+                        continuation.resume(returning: .success(result))
                     } catch {
-                        completionHandler(.failure(error))
+                        continuation.resume(returning: .failure(error))
                     }
+                case .failure(let error):
+                    continuation.resume(returning: .failure(error))
                 }
-            case .failure(let error):
-                completionHandler(.failure(error))
             }
         }
     }
@@ -127,59 +127,51 @@ class BaseNetworkManager {
 final class NetworkManager: BaseNetworkManager {
     
     func fetchPopular(
-        page: Int,
-        completionHandler: @escaping (Result<ResultPopularMovies, Error>) -> Void
-    ) {
-        request(target: .popular(page), completionHandler: completionHandler)
+        page: Int
+    ) async -> Result<ResultPopularMovies, Error> {
+       await request(target: .popular(page))
     }
     
     func fetchMovie(
-        movieId: Int,
-        completionHandler: @escaping (Result<Movie, Error>) -> Void
-    ) {
-        request(target: .movie(movieId), completionHandler: completionHandler)
+        movieId: Int
+    ) async -> Result<Movie, Error> {
+       await request(target: .movie(movieId))
     }
     
     func fetchUpcoming(
-        page: Int,
-        completionHandler: @escaping (Result<ResultPopularMovies, Error>) -> Void
-    ) {
-        request(target: .upcoming(page), completionHandler: completionHandler)
+        page: Int
+    ) async -> Result<ResultPopularMovies, Error> {
+       await request(target: .upcoming(page))
     }
     
     func fetchTvSeries(
-        page: Int,
-        completionHandler: @escaping (Result<ResultPopularMovies, Error>) -> Void
-    ) {
-        request(target: .popularSeries(page), completionHandler: completionHandler)
+        page: Int
+    ) async -> Result<ResultPopularMovies, Error> {
+       await request(target: .popularSeries(page))
     }
     
     func fetchActors(
-        page: Int,
-        completionHandler: @escaping (Result<PopularActors, Error>) -> Void
-    ) {
-        request(target: .person(page), completionHandler: completionHandler)
+        page: Int
+    ) async -> Result<PopularActors, Error> {
+       await request(target: .person(page))
     }
     
     func fetchSerielsDetails(
-        serielsId: Int,
-        completionHandler: @escaping (Result<Movie, Error>) -> Void
-    ) {
-        request(target: .serialDetails(serielsId), completionHandler: completionHandler)
+        serielsId: Int
+    ) async -> Result<Movie, Error> {
+       await request(target: .serialDetails(serielsId))
     }
     
     func fetchActorDetails(
-        actorId: Int,
-        completionHandler: @escaping (Result<ActorDetails, Error>) -> Void
-    ) {
-        request(target: .actorDetails(actorId), completionHandler: completionHandler)
+        actorId: Int
+    ) async -> Result<ActorDetails, Error> {
+       await request(target: .actorDetails(actorId))
     }
     
     func fetchActorImages(
-        actorId: Int,
-        completionHandler: @escaping (Result<ActorImages, Error>) -> Void
-    ) {
-        request(target: .actorImages(actorId), completionHandler: completionHandler)
+        actorId: Int
+    ) async -> Result<ActorImages, Error> {
+       await request(target: .actorImages(actorId))
     }
 }
 

@@ -56,7 +56,9 @@ struct HomeView: View {
                         .shadow(color: Colors.shadowColor.sui, radius: 2, x: 2, y: 2)
                         .padding(.leading, 10)
                         .onAppear {
-                            viewModel.loadMoreMovie(currentItem: movie)
+                            Task {
+                               await viewModel.loadMoreMovie(currentItem: movie)
+                            }
                         }
                     }
                 }
@@ -100,7 +102,9 @@ struct HomeView: View {
                         .shadow(color: Colors.shadowColor.sui, radius: 2, x: 2, y: 2)
                         .padding(.leading, 15)
                         .onAppear {
-                            viewModel.loadMoreSeriels(currentItem: seriel)
+                            Task {
+                               await viewModel.loadMoreSeriels(currentItem: seriel)
+                            }
                         }
                     }
                 }
@@ -129,7 +133,9 @@ struct HomeView: View {
                                 .padding(.horizontal, 10)
                         }
                         .onAppear {
-                            viewModel.loadMoreActors(currentItem: item)
+                            Task {
+                               await viewModel.loadMoreActors(currentItem: item)
+                            }
                         }
                     }
                 }

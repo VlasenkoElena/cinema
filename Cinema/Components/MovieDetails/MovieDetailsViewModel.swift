@@ -32,7 +32,7 @@ final class MovieDetailsViewModel: ObservableObject {
     
     var trailer: String? {
         let baseUrl = "https://youtube.com/watch?v="
-        guard let trailer = movie.videos?.results.first(where: {$0.type == .trailer}) else {
+        guard let trailer = movie.videos?.results?.first(where: {$0.type == .trailer}) else {
             return nil
         }
         return baseUrl + trailer.key

@@ -73,7 +73,7 @@ struct HomeView: View {
                 Spacer()
             }.padding()
             ScrollView(.horizontal) {
-                LazyHStack(spacing: 0) {
+                LazyHStack {
                     ForEach(viewModel.series) { seriel in
                         VStack {
                             NavigationLink {

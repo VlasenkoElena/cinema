@@ -21,7 +21,7 @@ import Foundation
     let actorId: Int
     
     var birthday: String? {
-        actor?.birthday.date(
+        actor?.birthday?.date(
             fromFormat: "yyyy-MM-dd",
             toFormat: "d MMMM yyyy"
         )

@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class HomeViewModel: ObservableObject {
+@MainActor final class HomeViewModel: ObservableObject {
     
     private let networkManager = NetworkManager()
     var totalMoviePages = 0
@@ -28,86 +28,80 @@ final class HomeViewModel: ObservableObject {
     private(set) var series: [Movie] = []
     private(set) var actors: [Actor] = []
     
-    
-    
-    
-    
     init() {
-        fetchPopularMovie()
-        fetchSeries()
-        fetchActors()
-    }
-    
-    func fetchPopularMovie() {
-        networkManager.fetchPopular(page: moviePage) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let resultPopularMovies):
-                self.movies += resultPopularMovies.results
-                self.moviePage = resultPopularMovies.page
-                self.totalMoviePages = resultPopularMovies.totalPages
-                self.state = .loaded
-            case .failure(let error):
-                self.state = .error(error.localizedDescription)
-            }
+        Task {
+            await fetchPopularMovie()
+            await fetchSeries()
+            await fetchActors()
         }
     }
     
-    func fetchSeries() {
-        networkManager.fetchTvSeries(page: seriesPage) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let series):
-                self.series = series.results
-                self.seriesPage = series.page
-                self.totalSeriesPages = series.totalPages
-                self.state = .loaded
-            case .failure(let error):
-                self.state = .error(error.localizedDescription)
-            }
+    func fetchPopularMovie() async {
+        let result = await networkManager.fetchPopular(page: moviePage)
+        switch result {
+        case .success(let resultPopularMovies):
+            movies += resultPopularMovies.results
+            moviePage = resultPopularMovies.page
+            totalMoviePages = resultPopularMovies.totalPages
+            state = .loaded
+        case .failure(let error):
+            state = .error(error.localizedDescription)
         }
     }
     
-    func fetchActors() {
-        networkManager.fetchActors(page: actorPage) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let actors):
-                self.actors = actors.results
-                self.state = .loaded
-            case .failure(let error):
-                self.state = .error(error.localizedDescription)
-            }
+    func fetchSeries() async {
+        let result = await networkManager.fetchTvSeries(page: seriesPage)
+        switch result {
+        case .success(let series):
+            self.series = series.results
+            seriesPage = series.page
+            totalSeriesPages = series.totalPages
+            state = .loaded
+        case .failure(let error):
+            state = .error(error.localizedDescription)
         }
+        
     }
     
-    func loadMoreMovie(currentItem: Movie) {
+    func fetchActors() async {
+        let result = await networkManager.fetchActors(page: actorPage)
+        switch result {
+        case .success(let actors):
+            self.actors = actors.results
+            state = .loaded
+        case .failure(let error):
+            state = .error(error.localizedDescription)
+        }
+        
+    }
+    
+    func loadMoreMovie(currentItem: Movie) async {
         if case .loading = state {
             return
         }
         if currentItem.id == movies.last?.id {
             moviePage += 1
-            fetchPopularMovie()
+            await fetchPopularMovie()
         }
     }
     
-    func loadMoreSeriels(currentItem: Movie) {
+    func loadMoreSeriels(currentItem: Movie) async {
         if case .loading = state {
             return
         }
         if currentItem.id == series.last?.id {
             seriesPage += 1
-            fetchSeries()
+           await fetchSeries()
         }
     }
     
-    func loadMoreActors(currentItem: Actor) {
+    func loadMoreActors(currentItem: Actor) async {
         if case .loading = state {
             return
         }
         if currentItem.id == actors.last?.id {
             moviePage += 1
-            fetchActors()
+            await fetchActors()
         }
     }
     

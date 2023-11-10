@@ -14,6 +14,8 @@ struct MovieDetailsView: View {
     // MARK: - Properties -
     
     @StateObject var viewModel: MovieDetailsViewModel
+    @State private var isShowRate = false
+    @State private var selectedMovie: Movie?
     
     
     // MARK: - Init -
@@ -71,7 +73,21 @@ struct MovieDetailsView: View {
                 Text("/10")
                     .font(.system(size: 15))
             }
+            
+            Spacer()
+            
+            Button {
+                selectedMovie = viewModel.movie
+                isShowRate.toggle()
+            } label: {
+                Label("Rate", systemImage: "star")
+            }
+            .fullScreenCover(isPresented: $isShowRate) {
+                RaitingView(movie: $selectedMovie, rating: 0)
+            }
         }
+        .frame(width: 200)
+        .padding()
     }
     
     @ViewBuilder

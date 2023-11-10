@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ActorsViewModel: ObservableObject {
+@MainActor final class ActorsViewModel: ObservableObject {
     
     private let networkManager = NetworkManager()
     
@@ -21,7 +21,7 @@ final class ActorsViewModel: ObservableObject {
     let actorId: Int
     
     var birthday: String? {
-        actor?.birthday.date(
+        actor?.birthday?.date(
             fromFormat: "yyyy-MM-dd",
             toFormat: "d MMMM yyyy"
         )
@@ -29,32 +29,31 @@ final class ActorsViewModel: ObservableObject {
     
     init(id: Int) {
         self.actorId = id
-        fetchActorDetails()
-        fetchActorImages()
-    }
-    
-    func fetchActorDetails() {
-        networkManager.fetchActorDetails(actorId: actorId) { [weak self] result in
-            switch result {
-            case .success(let actor):
-                self?.actor = actor
-                self?.state = .loaded
-            case .failure(let error):
-                self?.state = .error(error.localizedDescription)
-            }
+        Task {
+            await fetchActorDetails()
+            await fetchActorImages()
         }
     }
     
-    func fetchActorImages() {
-        networkManager.fetchActorImages(actorId: actorId) { [weak self] result in
-            switch result {
-            case .success(let images):
-                self?.images = images.profiles
-                self?.state = .loaded
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+    func fetchActorDetails() async {
+        let result = await networkManager.fetchActorDetails(actorId: actorId)
+        switch result {
+        case .success(let actor):
+            self.actor = actor
+            state = .loaded
+        case .failure(let error):
+            state = .error(error.localizedDescription)
         }
     }
     
+    func fetchActorImages() async {
+        let result = await networkManager.fetchActorImages(actorId: actorId)
+        switch result {
+        case .success(let images):
+            self.images = images.profiles
+            state = .loaded
+        case .failure(let error):
+            state = .error(error.localizedDescription)
+        }
+    }
 }

@@ -100,7 +100,7 @@ struct Genre: Codable {
 }
 
 struct Videos: Codable {
-    let results: [Video]
+    let results: [Video]?
 }
 
 // MARK: - Video

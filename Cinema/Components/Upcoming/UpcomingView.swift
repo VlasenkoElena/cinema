@@ -41,7 +41,9 @@ struct UpcomingView: View {
                             .padding()
                     }
                     .onAppear {
-                       viewModel.loadMoreContent(currentItem: movie)
+                        Task {
+                           await viewModel.loadMoreContent(currentItem: movie)
+                        }
                      }
                 }
             }

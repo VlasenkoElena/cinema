@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7908342A2AFBA4EC002A1D34 /* RaitingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790834292AFBA4EC002A1D34 /* RaitingView.swift */; };
+		7908342D2AFBF342002A1D34 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7908342C2AFBF342002A1D34 /* VisualEffectView.swift */; };
 		7943B2EC2AE151E3001F367A /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7943B2EB2AE151E3001F367A /* YouTubePlayerKit */; };
 		7943B2EF2AE157A5001F367A /* Constans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7943B2EE2AE157A5001F367A /* Constans.swift */; };
 		7943B2F22AE16A84001F367A /* Extensions+Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7943B2F12AE16A84001F367A /* Extensions+Double.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		790834292AFBA4EC002A1D34 /* RaitingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaitingView.swift; sourceTree = "<group>"; };
+		7908342C2AFBF342002A1D34 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		7943B2EE2AE157A5001F367A /* Constans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constans.swift; sourceTree = "<group>"; };
 		7943B2F12AE16A84001F367A /* Extensions+Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Double.swift"; sourceTree = "<group>"; };
 		799B32972ADD704000710DE1 /* Cinema.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cinema.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +81,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7908342B2AFBF31F002A1D34 /* ViewRepresentable */ = {
+			isa = PBXGroup;
+			children = (
+				7908342C2AFBF342002A1D34 /* VisualEffectView.swift */,
+			);
+			path = ViewRepresentable;
+			sourceTree = "<group>";
+		};
 		7943B2ED2AE15785001F367A /* Constans */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +126,7 @@
 		799B32992ADD704000710DE1 /* Cinema */ = {
 			isa = PBXGroup;
 			children = (
+				7908342B2AFBF31F002A1D34 /* ViewRepresentable */,
 				79F8AF282AE93A1000302D64 /* Style */,
 				7943B2F02AE16A46001F367A /* Extensions */,
 				7943B2ED2AE15785001F367A /* Constans */,
@@ -161,6 +174,7 @@
 			children = (
 				799B32B32ADFE94800710DE1 /* MovieDetailsView.swift */,
 				799B32B82AE0024500710DE1 /* MovieDetailsViewModel.swift */,
+				790834292AFBA4EC002A1D34 /* RaitingView.swift */,
 			);
 			path = MovieDetails;
 			sourceTree = "<group>";
@@ -286,8 +300,10 @@
 			files = (
 				799B32B92AE0024500710DE1 /* MovieDetailsViewModel.swift in Sources */,
 				79F8AF252AE6AD2C00302D64 /* HomeViewModel.swift in Sources */,
+				7908342A2AFBA4EC002A1D34 /* RaitingView.swift in Sources */,
 				799B32B42ADFE94800710DE1 /* MovieDetailsView.swift in Sources */,
 				7943B2EF2AE157A5001F367A /* Constans.swift in Sources */,
+				7908342D2AFBF342002A1D34 /* VisualEffectView.swift in Sources */,
 				79F8AF1B2AE2BC1F00302D64 /* Actor.swift in Sources */,
 				79F8AF232AE6AB9D00302D64 /* HomeView.swift in Sources */,
 				79F8AF2B2AEA9C1F00302D64 /* ImageView.swift in Sources */,

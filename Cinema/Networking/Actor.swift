@@ -22,13 +22,14 @@ struct PopularActors: Codable {
 
 // MARK: - Result
 struct Actor: Codable {
-    let adult: Bool
-    let gender, id: Int
-    let knownFor: [KnownFor]
-    let knownForDepartment: KnownForDepartment
-    let name: String
-    let popularity: Double
-    let profilePath: String
+    let adult: Bool?
+    let gender: Int?
+    let id: Int
+    let knownFor: [KnownFor]?
+    let knownForDepartment: KnownForDepartment?
+    let name: String?
+    let popularity: Double?
+    let profilePath: String?
 
     enum CodingKeys: String, CodingKey {
         case adult, gender, id
@@ -42,17 +43,17 @@ struct Actor: Codable {
 // MARK: - KnownFor
 struct KnownFor: Codable {
     let adult: Bool?
-    let backdropPath: String
-    let genreIDS: [Int]
+    let backdropPath: String?
+    let genreIDS: [Int]?
     let id: Int
-    let mediaType: MediaType
+    let mediaType: MediaType?
     let originalLanguage: String?
     let originalTitle: String?
-    let overview: String
+    let overview: String?
     let posterPath, releaseDate, title: String?
     let video: Bool?
-    let voteAverage: Double
-    let voteCount: Int
+    let voteAverage: Double?
+    let voteCount: Int?
     let firstAirDate, name: String?
     let originCountry: [String]?
     let originalName: String?

@@ -32,6 +32,8 @@ struct MovieDetailsView: View {
                 Text(viewModel.movie.title ?? viewModel.movie.name ?? "")
                     .font(.title3)
                     .bold()
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
                 genres
                 raiting
                 player
